@@ -1,0 +1,5 @@
+16th Feb 2016
+************************************************************************
+-Created the git repo and pushed the files
+-Heartrate sensor is a bit buggy, need to tweak code WRT that
+-Need to create android module and interface the phone and watch so that the phone can get the watch's data.
