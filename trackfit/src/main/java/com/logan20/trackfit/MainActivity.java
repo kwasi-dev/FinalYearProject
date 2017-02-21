@@ -1,4 +1,4 @@
-package com.example.trackfit;
+package com.logan20.trackfit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
