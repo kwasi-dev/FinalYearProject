@@ -14,7 +14,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        Toast.makeText(this, "TODO- link database etc", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "TODO- hnv nhnbjvvv database etc", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
