@@ -6,13 +6,15 @@ import android.os.Bundle;
 
 import android.os.CountDownTimer;
 
+import com.facebook.FacebookSdk;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         new CountDownTimer(2000,1000){
 
             @Override
