@@ -1,5 +1,6 @@
 package com.logan20.trackfit;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        String email = ((EditText)findViewById(R.id.et_email)).getText().toString();
-        String password = ((EditText)findViewById(R.id.et_password)).getText().toString();
+        final String email = ((EditText)findViewById(R.id.et_email)).getText().toString();
+        final String password = ((EditText)findViewById(R.id.et_password)).getText().toString();
 
         if (email.isEmpty()){
             Toast.makeText(this, "Please enter an email!", Toast.LENGTH_SHORT).show();
@@ -43,6 +44,24 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this, "Todo - match data with server and login",Toast.LENGTH_SHORT).show();
+        new AsyncTask<String,Void,Integer>(){
+
+            @Override
+            protected Integer doInBackground(String... strings) {
+
+                return DatabaseHandler.login(email,password);
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                if (integer!=-1){
+                    startActivity(new Intent(LoginActivity.this,NavigationActivity.class).putExtra("userid",integer));
+                    finish();
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 }

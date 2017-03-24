@@ -58,7 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         if (DatabaseHandler.createUser(fName,lName,gender,email,pass,weight,height,exCategory,day,month,year)){
-            makeToast("Successfully registered!");
+            makeToast("Successfully registered! Please log in");
+            finish();
         }else{
             makeToast("An error has occured, please try again later");
         }

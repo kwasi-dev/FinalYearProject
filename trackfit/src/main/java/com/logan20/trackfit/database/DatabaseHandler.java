@@ -2,6 +2,7 @@ package com.logan20.trackfit.database;
 
 import java.security.spec.ECField;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -77,5 +78,45 @@ public class DatabaseHandler {
         Class.forName(DRIVER);
         conn = DriverManager.getConnection(DB_URL + DB_NAME, USERNAME, PASSWORD);
         stmt = conn.createStatement();
+    }
+
+    public static int login(String username, String password) {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT USERID FROM USER WHERE emailAdd ='" + username + "' AND PASSWORD = '"+password+"'");
+            while (rs.next()) {
+                return rs.getInt("USERID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    // TODO: 3/23/2017 add last name to database, get first name and last name from user
+    public static String getNameFromID(int userid) {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT FIRSTNAME FROM USER WHERE USERID ='" + userid + "'");
+            while (rs.next()) {
+                return rs.getString("FIRSTNAME");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return " ";
+    }
+
+    public static String getEmailFromID(int userid) {
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT EMAILADD FROM USER WHERE USERID ='" + userid + "'");
+            while (rs.next()) {
+                return rs.getString("EMAILADD");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return " ";
     }
 }
