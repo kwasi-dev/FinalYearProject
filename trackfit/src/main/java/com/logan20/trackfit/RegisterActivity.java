@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         int day = dp.getDayOfMonth();
         int month = dp.getMonth();
         int year = dp.getYear();
-
+      
         if (fName.isEmpty() | lName.isEmpty() || gender.isEmpty() || email.isEmpty() || pass.isEmpty() || passConf.isEmpty() || weight.isEmpty() || height.isEmpty() ||exCategory.isEmpty()){
             makeToast("Enter all fields!");
             return;
@@ -64,7 +64,12 @@ public class RegisterActivity extends AppCompatActivity {
             makeToast("An error has occured, please try again later");
         }
     }
-
+//     need to include current date grab to add date profile created and get current year 
+//         public int age(int year){
+//         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//         LocalDate localDate = LocalDate.now();
+//         return localDate.getYear()-year;
+//          }
     private void makeToast(String str) {
         if (toast!=null){
             toast.cancel();
