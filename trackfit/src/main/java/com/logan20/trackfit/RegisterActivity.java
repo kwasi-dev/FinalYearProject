@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.logan20.trackfit.database.DatabaseHandler;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class RegisterActivity extends AppCompatActivity {
     private Toast toast;
@@ -44,7 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         int day = dp.getDayOfMonth();
         int month = dp.getMonth();
         int year = dp.getYear();
-      
+
+        int age = getAge(day,month,year);
+
         if (fName.isEmpty() | lName.isEmpty() || gender.isEmpty() || email.isEmpty() || pass.isEmpty() || passConf.isEmpty() || weight.isEmpty() || height.isEmpty() ||exCategory.isEmpty()){
             makeToast("Enter all fields!");
             return;
@@ -57,6 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
             makeToast("Passwords do not match!");
             return;
         }
+        if (age<0 || age > 130){
+            makeToast("Enter a valid age");
+            return;
+        }
         if (DatabaseHandler.createUser(fName,lName,gender,email,pass,weight,height,exCategory,day,month,year)){
             makeToast("Successfully registered! Please log in");
             finish();
@@ -64,7 +73,17 @@ public class RegisterActivity extends AppCompatActivity {
             makeToast("An error has occured, please try again later");
         }
     }
-//     need to include current date grab to add date profile created and get current year 
+
+    private int getAge(int day, int month, int year) {
+        Calendar now = Calendar.getInstance();
+        int age = now.get(Calendar.YEAR) - year;
+        if (month > now.get(Calendar.MONTH) || (month == now.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) > day)){
+            age--;
+        }
+        return age;
+    }
+
+    //     need to include current date grab to add date profile created and get current year
 //         public int age(int year){
 //         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 //         LocalDate localDate = LocalDate.now();
