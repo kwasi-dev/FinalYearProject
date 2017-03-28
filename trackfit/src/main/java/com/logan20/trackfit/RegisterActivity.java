@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
             makeToast("Passwords do not match!");
             return;
         }
-        if (age<0 || age > 130){
+        if (age<18 || age>60){
             makeToast("Enter a valid age");
             return;
         }
