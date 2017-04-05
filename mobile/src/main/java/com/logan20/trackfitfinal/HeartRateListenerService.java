@@ -6,10 +6,6 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
-import java.nio.ByteBuffer;
-
-import static android.content.ContentValues.TAG;
-
 /**
  * This class acts as the Broadcast service receiver.
  * It accepts messages that are sent from the watch and then processes it accordingly.
@@ -42,8 +38,8 @@ public class HeartRateListenerService extends WearableListenerService{
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         if (listener!=null){
-            String num = new String(messageEvent.getData());
-            int curr = Integer.parseInt(num);
+            String msg = new String(messageEvent.getData());
+            int curr = Integer.parseInt(msg);
             if (curr==currHeartRate){
                 listener.onWatchDataReceive();
             }

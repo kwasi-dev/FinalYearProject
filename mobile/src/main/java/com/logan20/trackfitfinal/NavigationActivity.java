@@ -1,7 +1,7 @@
 package com.logan20.trackfitfinal;
 
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentManager;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,7 +11,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.logan20.trackfitcommon.DatabaseHandler;
 
@@ -19,8 +18,8 @@ import com.logan20.trackfitcommon.DatabaseHandler;
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static int userid;
     private NavigationView navigationView;
-    private FrameLayout fl;
-
+    private String name;
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +27,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("TrackFit");
         setSupportActionBar(toolbar);
-        fl = ((FrameLayout)findViewById(R.id.fl_content));
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
@@ -51,33 +49,57 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     private void setEmailPanel() {
         final TextView panel = (TextView) navigationView.findViewById(R.id.email_panel);
-        new AsyncTask<Void,Void,String>(){
-            @Override
-            protected String doInBackground(Void... voids) {
-                return (DatabaseHandler.getEmailFromID(userid));
-            }
+        if (email==null){
+            new AsyncTask<Void,Void,String>(){
+                @Override
+                protected String doInBackground(Void... voids) {
+                    email= (DatabaseHandler.getEmailFromID(userid));
+                    return email;
+                }
 
-            @Override
-            protected void onPostExecute(String s) {
-                panel.setText(s);
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(String s) {
+                    panel.setText(s);
+                }
+            }.execute();
+        }
+        else{
+            panel.post(new Runnable() {
+                @Override
+                public void run() {
+                    panel.setText(email);
+                }
+            });
+        }
+
 
     }
 
     private void setNamePanel() {
         final TextView namePanel = (TextView) navigationView.findViewById(R.id.name_panel);
-        new AsyncTask<Void,Void,String>(){
-            @Override
-            protected String doInBackground(Void... voids) {
-                return (DatabaseHandler.getNameFromID(userid));
-            }
+        //get the user's name if it isn't fetched
+        if (name==null){
+            new AsyncTask<Void,Void,String>(){
+                @Override
+                protected String doInBackground(Void... voids) {
+                    name = (DatabaseHandler.getNameFromID(userid));
+                    return name;
+                }
 
-            @Override
-            protected void onPostExecute(String s) {
-                namePanel.setText(s);
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(String s) {
+                    namePanel.setText(s);
+                }
+            }.execute();
+        }
+        else{
+            namePanel.post(new Runnable() {
+                @Override
+                public void run() {
+                    namePanel.setText(name);
+                }
+            });
+        }
 
     }
 
@@ -93,7 +115,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_my_home:
 

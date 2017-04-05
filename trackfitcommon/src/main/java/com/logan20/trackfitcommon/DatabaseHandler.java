@@ -116,4 +116,21 @@ public class DatabaseHandler {
 
         return " ";
     }
+
+     /*
+        Shanea Lewis 03/04/2017
+        retrieve exercise preference
+    */
+
+    public static int getExercisePrefFromID(int userid){
+        try{
+            ResultSet rs = stmt.executeQuery("SELECT EXPREFID FORM USER WHERE USERID='" + userid + "'");
+            while(rs.next()){
+                return rs.getInt("EXPREFID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
