@@ -139,9 +139,9 @@ public class DatabaseHandler {
         ResultSet rs = stmt.executeQuery("SELECT EXERCISE FROM EXERCISES WHERE TYPE ='"+exPrefId+"'");
         while(rs.next()){
             return rs.getString("EXERCISE");
+            }
         }catch(SQLException e){
             e.printStackTrace();
-        }
     }
     return " ";
 }
@@ -152,10 +152,10 @@ public static String getDuration(String exercise){
         ResultSet rs = stmt.executeQuery("SELECT DURATION FROM EXERCISES WHERE EXERCISE ='"+exercise+"'");
         while(rs.next()){
             return rs.getString("DURATION");
-        }catch(SQLException e){
+        }
+    }catch(SQLException e){
             e.printStackTrace();
         }
-    }
     return " ";
 }
 
@@ -164,10 +164,10 @@ public static int getHeartRateZone(String exercise){
         ResultSet rs = stmt.executeQuery("SELECT HRZONE FROM EXERCISES WHERE EXERCISE ='"+exercise+"'");
         while(rs.next()){
             return rs.getInt("HRZONE");
-        }catch(SQLException e){
+        }
+    }catch(SQLException e){
             e.printStackTrace();
         }
-    }
     return -1;
 }
 
@@ -176,10 +176,10 @@ public static String getEquipment(String exercise){
         ResultSet rs = stmt.executeQuery("SELECT EQUIPMENT FROM EXERCISES WHERE EXERCISE ='"+exercise+"'");
         while(rs.next()){
             return rs.getString("EQUIPMENT");
-        }catch(SQLException e){
+        }
+    }catch(SQLException e){
             e.printStackTrace();
         }
-    }
     return " ";
 }
 }
