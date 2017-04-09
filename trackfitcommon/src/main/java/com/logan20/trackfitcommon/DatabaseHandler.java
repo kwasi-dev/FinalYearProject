@@ -133,9 +133,8 @@ public class DatabaseHandler {
         }
         return -1;
     }
-}
-
-public static String getExercise(int exPrefId){
+    
+    public static String getExercise(int exPrefId){
     try{
         ResultSet rs = stmt.executeQuery("SELECT EXERCISE FROM EXERCISES WHERE TYPE ='"+exPrefId+"'");
         while(rs.next()){
@@ -183,3 +182,6 @@ public static String getEquipment(String exercise){
     }
     return " ";
 }
+}
+
+
