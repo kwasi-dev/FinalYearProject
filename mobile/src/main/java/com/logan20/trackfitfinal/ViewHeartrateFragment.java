@@ -8,6 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
+
 /**
  * Created by kwasi on 4/4/2017.
  */
@@ -15,13 +22,18 @@ import android.widget.TextView;
 public class ViewHeartrateFragment extends Fragment implements WatchListener{
 
     private TextView tv;
-
+    private LineChart lc;
+    private ArrayList<Entry> entryList;
+    private int x;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_heartrate,null);
+        lc = (LineChart)v.findViewById(R.id.lc_chart);
         tv = ((TextView)v.findViewById(R.id.tv_heartRate));
+        entryList = new ArrayList<Entry>();
         HeartRateListenerService.setListener(this);
+        x=0;
         return v;
     }
 
@@ -39,6 +51,16 @@ public class ViewHeartrateFragment extends Fragment implements WatchListener{
             }
         });
 
+        entryList.add(new Entry(x,newVal));
+        x++;
+        LineDataSet lineDataSet = new LineDataSet(entryList,"");
+        lc.setData(new LineData(lineDataSet));
+        lc.post(new Runnable() {
+            @Override
+            public void run() {
+                lc.invalidate();
+            }
+        });
     }
 
     @Override

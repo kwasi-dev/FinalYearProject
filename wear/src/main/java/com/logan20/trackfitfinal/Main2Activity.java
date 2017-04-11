@@ -100,7 +100,7 @@ public class Main2Activity extends WearableActivity implements SensorEventListen
         if (isAmbient()) {
             mContainerView.setBackgroundColor(getResources().getColor(android.R.color.black));
             mTextView.setTextColor(getResources().getColor(android.R.color.white));
-            mClockView.setVisibility(View.VISIBLE);
+            mClockView.setVisibility(View.INVISIBLE);
 
             mClockView.setText(AMBIENT_DATE_FORMAT.format(new Date()));
         } else {
@@ -122,12 +122,7 @@ public class Main2Activity extends WearableActivity implements SensorEventListen
                 public void run() {
                     NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(client).await();
                     for(Node node : nodes.getNodes()) {
-                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(client, node.getId(), "/ListenerService", String.valueOf((int)sensorEvent.values[0]).getBytes()).await();
-                        if(!result.getStatus().isSuccess()){
-                            Log.d(TAG, "run: error");
-                        } else {
-                            Log.d(TAG, "run: sucess");
-                        }
+                        Wearable.MessageApi.sendMessage(client, node.getId(), "/ListenerService", String.valueOf((int)sensorEvent.values[0]).getBytes()).await();
                     }
                 }
             }).start();
