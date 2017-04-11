@@ -93,7 +93,6 @@ public class Main2Activity extends WearableActivity implements SensorEventListen
     protected void onPause() {
         sensorManager.unregisterListener(this,heartSensor);
         super.onPause();
-
     }
 
     private void updateDisplay() {
