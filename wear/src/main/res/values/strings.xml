@@ -2,4 +2,14 @@
     <string name="app_name">TrackFit Final</string>
     <string name="title_activity_main2">Track Fit Tracker</string>
     <string name="hello_world">Hello World!</string>
+
+    <string-array name="timer_values">
+        <item>30 seconds</item>
+        <item>45 seconds</item>
+        <item>60 seconds</item>
+        <item>120 seconds</item>
+        <item>180 seconds</item>
+        <item>300 seconds</item>
+        <item>600 seconds</item>
+    </string-array>
 </resources>

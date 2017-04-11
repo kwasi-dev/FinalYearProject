@@ -1,10 +1,14 @@
 package com.logan20.trackfitfinal;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,6 +24,13 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private NavigationView navigationView;
     private String name;
     private String email;
+    private HomeFragment homeFrag;
+    private ExerciseFragment exFrag;
+    private ProfileFragment proFrag;
+    private HistoryFragment histFrag;
+    private ViewHeartrateFragment currHRFrag;
+    private SettingsFragment settFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +55,26 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         userid = getIntent().getIntExtra("userid",-1);
+        loadFragments();
+        load(homeFrag);
+    }
+
+    private void loadFragments() {
+        homeFrag =new HomeFragment();
+        homeFrag.setId(userid);
+
+        exFrag = new ExerciseFragment();
+        exFrag.setId(userid);
+
+        proFrag = new ProfileFragment();
+        proFrag.setId(userid);
+
+        histFrag = new HistoryFragment();
+        histFrag.setId(userid);
+
+        currHRFrag = new ViewHeartrateFragment();
+
+        settFrag = new SettingsFragment();
     }
 
 
@@ -118,24 +149,25 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_my_home:
-
+                load(homeFrag);
                 break;
             case R.id.nav_my_exercises:
-
+                load(exFrag);
                 break;
             case R.id.nav_my_profile:
-
+                load(proFrag);
                 break;
-
             case R.id.nav_my_history:
-
+                load(histFrag);
                 break;
-
             case R.id.nav_my_heartrate:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fl_content,new ViewHeartrateFragment()).commit();
+                load(currHRFrag);
                 break;
             case R.id.nav_settings:
-
+                load(settFrag);
+                break;
+            case R.id.nav_logout:
+                logout();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -143,4 +175,37 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
+    private void logout() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout?")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(NavigationActivity.this,LoginActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no,null)
+                .setCancelable(false)
+                .show();
+    }
+
+    private void load(Fragment frag) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_content,frag).commit();
+    }
+
+    public void loadHome() {
+        load(homeFrag);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    public void loadExerciseList() {
+        load(exFrag);
+    }
 }

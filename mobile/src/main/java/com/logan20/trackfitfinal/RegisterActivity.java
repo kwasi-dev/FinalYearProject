@@ -1,5 +1,6 @@
 package com.logan20.trackfitfinal;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,18 +26,19 @@ public class RegisterActivity extends AppCompatActivity {
         //Variables that contain the user entered information
         String fName = ((TextView)findViewById(R.id.et_fName)).getText().toString();
         String lName = ((TextView)findViewById(R.id.et_lName)).getText().toString();
-        String gender = getGender();
-        String email = ((TextView)findViewById(R.id.et_email)).getText().toString();
-        String pass = ((TextView)findViewById(R.id.et_password)).getText().toString();
+        final String gender = getGender();
+        final String email = ((TextView)findViewById(R.id.et_email)).getText().toString();
+        final String pass = ((TextView)findViewById(R.id.et_password)).getText().toString();
         String passConf = ((TextView)findViewById(R.id.et_passwordConfirm)).getText().toString();
-        String weight = ((TextView)findViewById(R.id.et_weight)).getText().toString();
-        String  height = ((TextView)findViewById(R.id.et_height)).getText().toString();
-        String exCategory=getExerciseCategory();
+        final String weight = ((TextView)findViewById(R.id.et_weight)).getText().toString();
+        final String  height = ((TextView)findViewById(R.id.et_height)).getText().toString();
+        final String exCategory=getExerciseCategory();
         DatePicker dp = ((DatePicker)findViewById(R.id.dp_dateOfBirth));
         int day = dp.getDayOfMonth();
         int month = dp.getMonth();
         int year = dp.getYear();
-        int age = getAge(day,month,year);
+        final int age = getAge(day,month,year);
+        final float bmi = getBMI(height,weight);
 
         //Data validation
         if (fName.isEmpty() | lName.isEmpty() || gender.isEmpty() || email.isEmpty() || pass.isEmpty() || passConf.isEmpty() || weight.isEmpty() || height.isEmpty() ||exCategory.isEmpty()){
@@ -62,12 +64,31 @@ public class RegisterActivity extends AppCompatActivity {
         //Data presentation
         fName=titleCase(fName);
         lName=titleCase(lName);
-        if (DatabaseHandler.createUser(fName,lName,gender,email,pass,weight,height,exCategory,day,month,year)){
-            makeToast("Successfully registered! Please log in");
-            finish();
-        }else{
-            makeToast("An error has occured, please try again later");
-        }
+        final String finalFName = fName;
+        final String finalLName = lName;
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                 return DatabaseHandler.createUser(finalFName, finalLName,gender,email,pass,weight,height,exCategory,age,bmi);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                if(aBoolean){
+                    makeToast("Successfully registered! Please log in");
+                }
+                else{
+                    makeToast("An error has occured, please try again later!");
+                }
+                finish();
+            }
+        }.execute();
+    }
+
+    private float getBMI(String height, String weight) {
+        float h = Float.parseFloat(height);
+        float w = Float.parseFloat(weight);
+        return (float) ((w*0.45)/Math.pow(h/100,2));
     }
 
     private String titleCase(String fName) {

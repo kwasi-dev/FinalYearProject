@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_navigation"
-    android:id="@+id/fl_content"/>
+    android:id="@+id/fl_content"
+    android:keepScreenOn="true"/>

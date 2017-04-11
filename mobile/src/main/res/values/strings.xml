@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TrackFit Final</string>
+    <string-array name="timer_values" />
 </resources>
